@@ -4,6 +4,7 @@ import Laba1 from './Pages/Laba1';
 import Laba2 from './Pages/Laba2';
 import Laba3 from './Pages/Laba3';
 import Laba4 from './Pages/Laba4';
+import Laba6 from './Pages/Laba6';
 import { Routes, Route, Link } from "react-router-dom";
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
@@ -21,6 +22,9 @@ const menu = (
     </Menu.Item>
     <Menu.Item key="4">
       <Link  to = "/laba4">Лаба №4</Link>
+    </Menu.Item>
+    <Menu.Item key="6">
+      <Link  to = "/laba6">Лаба №6</Link>
     </Menu.Item>
   </Menu>
 );
@@ -56,6 +60,7 @@ function App() {
             <Route path="/laba2" element={<Laba2 />} />
             <Route path="/laba3" element={<Laba3 />} />
             <Route path="/laba4" element={<Laba4 />} />
+            <Route path="/laba6" element={<Laba6 />} />
           </Routes>
         </div>
     </div>
