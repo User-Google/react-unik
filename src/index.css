@@ -137,39 +137,34 @@ code {
 
 .imageConteiner{
   width: 100%;
-  display: flex;
-  justify-content: flex-end;
+  min-height: 300px;
+  position: relative;
 }
 
-.carImage{
-  transition: 3s;
+.imageConteiner img {
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
 }
 
-.mvStyle{
-  margin-right: 0px;
-  transition: 2s;
-}
-.puStyle{
-  margin-right: 0px;
-  transition: 2s;
-}
-.scStyle{
-  margin-right: 0px;
+.dayTime {
+  height: 300px;
   transition: 2s;
 }
 
-.mvStyle1{
-  margin-right: 150px;
-  transition: 1s;
+.nightTime {
+  height: 300px;
 }
-.puStyle1{
-  margin-right: 150px;
-  transition: 1s;
+
+.dayTime:hover {
+ opacity: 0;
+  transition: 2s;
 }
-.scStyle1{
-  margin-right: 150px;
-  transition: 1s;
-}
+
 
 @font-face{
   font-family:'digital-clock-font';
