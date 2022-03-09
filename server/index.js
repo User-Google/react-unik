@@ -41,8 +41,8 @@ app.post("/create", (req, res) => {
     );
 });
 
-app.get("/getFilms", (req, res) => {
-    db.query("SELECT * FROM kino_table", (err, result) => {
+app.get("/getList", (req, res) => {
+    db.query("SELECT * FROM tea_catalog", (err, result) => {
         if (err) {
             console.log(err);
         } else {
