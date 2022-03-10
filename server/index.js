@@ -4,7 +4,6 @@ const mysql = require("mysql");
 const cors = require("cors");
 const bodyParser = require('body-parser')
 const fileUpload = require('express-fileupload');
-// const FileType = require('file-type');
 
 app.use(cors());
 app.use(express.json());
@@ -24,53 +23,8 @@ db.connect(function (err) {
     console.log('Connected to the MySQL server.');
 })
 
-app.post("/create", (req, res) => {
-    const photo = req.body.photo;
-    const caption = req.body.caption;
-
-    db.query(
-        "INSERT INTO posttable (photo, caption) VALUES (?,?)",
-        [photo, caption],
-        (err, result) => {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log("Values Inserted");
-            }
-        }
-    );
-});
-
 app.get("/getList", (req, res) => {
     db.query("SELECT * FROM tea_catalog", (err, result) => {
-        if (err) {
-            console.log(err);
-        } else {
-            res.send(result);
-        }
-    });
-});
-
-// app.put("/update", (req, res) => {
-//     const id = req.body.id;
-//     const caption = req.body.caption;
-//     db.query(
-//         "UPDATE posttable SET caption = ? WHERE id = ?",
-//         [caption, id],
-//         (err, result) => {
-//             if (err) {
-//                 console.log(err);
-//             } else {
-//                 res.send(result);
-//             }
-//         }
-//     );
-// });
-
-
-app.delete("/delete/:id", (req, res) => {
-    const id = req.params.id;
-    db.query("DELETE FROM posttable WHERE id = ?", id, (err, result) => {
         if (err) {
             console.log(err);
         } else {
