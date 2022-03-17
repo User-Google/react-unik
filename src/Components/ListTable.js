@@ -66,6 +66,7 @@ class ListTable extends Component {
                     { text: 'спринт', value: 'спринт' },
                     { text: 'гонка преследования', value: 'гонка преследования' },
                     { text: 'индивидуальный спринт', value: 'индивидуальный спринт' },
+                    { text: 'суперспринт', value: 'суперспринт' },
                 ],
                 filteredValue: filteredInfo.race || null,
                 onFilter: (value, record) => record.race.includes(value),
@@ -94,6 +95,8 @@ class ListTable extends Component {
                 filters: [
                     { text: 'Россия', value: 'Россия' },
                     { text: 'Китай', value: 'Китай' },
+                    { text: 'Германия', value: 'Германия' },
+                    { text: 'Англия', value: 'Англия' },
                 ],
                 filteredValue: filteredInfo.cup_country || null,
                 onFilter: (value, record) => record.cup_country.includes(value),
@@ -105,6 +108,9 @@ class ListTable extends Component {
                 title: 'Очки',
                 dataIndex: 'score',
                 key: 'score',
+                sorter: (a, b) => a.score - b.score,
+                sortOrder: sortedInfo.columnKey === 'score' && sortedInfo.order,
+                ellipsis: true,
             },
             {
                 title: 'Место',
