@@ -1,13 +1,18 @@
-import React, { Component } from "react";
-import { Table, Button, Space } from 'antd';
+import React, {Component, useState} from "react";
+import { Modal, Table, Typography, Button, Space } from 'antd';
 import Axios from "axios";
+const { Text } = Typography;
+
 
 class ListTable extends Component {
 
     state = {
         filteredInfo: null,
         sortedInfo: null,
-        data: this.props.val
+        data: this.props.val,
+        isModalVisible: false,
+        par_id: '1',
+        part_info: {}
     };
 
     handleChange = (pagination, filters, sorter) => {
@@ -18,101 +23,135 @@ class ListTable extends Component {
         });
     };
 
+    showModal = (name) => {
+        console.log(name.target.innerText)
+        this.setState({
+            isModalVisible: true,
+            par_id: name.target.innerText
+        });
+        Axios.get("http://localhost:3001/getPartInfo", { params: {
+                part_name: name.target.innerText
+            }
+        }).then((response) => {
+            this.setState({
+                part_info: response.data
+            });
+            console.log(this.state.part_info)
+        });
+    };
+
+    handleOk = () => {
+        this.setState({
+            isModalVisible: false
+        });
+    };
+
     render() {
-        let { sortedInfo, filteredInfo, data } = this.state;
+        let { sortedInfo, filteredInfo, data, isModalVisible, par_id, part_info } = this.state;
+
         sortedInfo = sortedInfo || {};
         filteredInfo = filteredInfo || {};
         const columns = [
             {
-                title: 'Производитель',
-                dataIndex: 'manufacturer',
-                key: 'manufacturer',
+                title: 'Участник',
+                dataIndex: 'participant',
+                key: 'participant',
+                render: (text) => <a onClick={this.showModal}>{text}</a>
+            },
+            {
+                title: 'Вид гонки',
+                dataIndex: 'race',
+                key: 'race',
                 filters: [
-                    { text: 'TESS', value: 'TESS' },
-                    { text: 'JustMont', value: 'JustMont' },
+                    { text: 'спринт', value: 'спринт' },
+                    { text: 'гонка преследования', value: 'гонка преследования' },
+                    { text: 'индивидуальный спринт', value: 'индивидуальный спринт' },
                 ],
-                filteredValue: filteredInfo.manufacturer || null,
-                onFilter: (value, record) => record.manufacturer.includes(value),
-                sorter: (a, b) => a.manufacturer.length - b.manufacturer.length,
-                sortOrder: sortedInfo.columnKey === 'manufacturer' && sortedInfo.order,
+                filteredValue: filteredInfo.race || null,
+                onFilter: (value, record) => record.race.includes(value),
+                sorter: (a, b) => a.race.length - b.race.length,
+                sortOrder: sortedInfo.columnKey === 'race' && sortedInfo.order,
                 ellipsis: true,
             },
             {
-                title: 'Сорт',
-                dataIndex: 'sort',
-                key: 'sort',
+                title: 'Пол',
+                dataIndex: 'gender',
+                key: 'gender',
                 filters: [
-                    { text: 'зеленый', value: 'зеленый' },
-                    { text: 'черный', value: 'черный' },
-                    { text: 'белый', value: 'белый' },
+                    { text: 'М', value: 'М' },
+                    { text: 'Ж', value: 'Ж' },
                 ],
-                filteredValue: filteredInfo.sort || null,
-                onFilter: (value, record) => record.sort.includes(value),
-                sorter: (a, b) => a.sort.length - b.sort.length,
-                sortOrder: sortedInfo.columnKey === 'sort' && sortedInfo.order,
+                filteredValue: filteredInfo.gender || null,
+                onFilter: (value, record) => record.gender.includes(value),
+                sorter: (a, b) => a.gender.length - b.gender.length,
+                sortOrder: sortedInfo.columnKey === 'gender' && sortedInfo.order,
                 ellipsis: true,
             },
             {
-                title: 'Вид',
-                dataIndex: 'species',
-                key: 'species',
+                title: 'Страна',
+                dataIndex: 'cup_country',
+                key: 'cup_country',
                 filters: [
-                    { text: 'листовой', value: 'листовой' },
-                    { text: 'пуэр', value: 'пуэр' },
-                    { text: 'порох', value: 'порох' },
+                    { text: 'Россия', value: 'Россия' },
+                    { text: 'Китай', value: 'Китай' },
                 ],
-                filteredValue: filteredInfo.species || null,
-                onFilter: (value, record) => record.species.includes(value),
-                sorter: (a, b) => a.species.length - b.species.length,
-                sortOrder: sortedInfo.columnKey === 'species' && sortedInfo.order,
+                filteredValue: filteredInfo.cup_country || null,
+                onFilter: (value, record) => record.cup_country.includes(value),
+                sorter: (a, b) => a.cup_country.length - b.cup_country.length,
+                sortOrder: sortedInfo.columnKey === 'cup_country' && sortedInfo.order,
                 ellipsis: true,
             },
             {
-                title: 'Добавки',
-                dataIndex: 'additives',
-                key: 'additives',
-                filters: [
-                    { text: 'жасмин', value: 'жасмин' },
-                    { text: 'бергамот', value: 'бергамот' },
-                    { text: 'роза', value: 'роза' },
-                ],
-                filteredValue: filteredInfo.additives || null,
-                onFilter: (value, record) => record.additives.includes(value),
-                sorter: (a, b) => a.additives.length - b.additives.length,
-                sortOrder: sortedInfo.columnKey === 'additives' && sortedInfo.order,
-                ellipsis: true,
+                title: 'Очки',
+                dataIndex: 'score',
+                key: 'score',
             },
             {
-                title: 'Вес',
-                dataIndex: 'weight',
-                key: 'weight',
-                sorter: (a, b) => a.weight - b.weight,
-                sortOrder: sortedInfo.columnKey === 'weight' && sortedInfo.order,
+                title: 'Место',
+                dataIndex: 'place',
+                key: 'place',
+                sorter: (a, b) => a.place - b.place,
+                sortOrder: sortedInfo.columnKey === 'place' && sortedInfo.order,
                 ellipsis: true,
             },
-            {
-                title: 'Стоимость',
-                dataIndex: 'cost',
-                key: 'cost',
-                // filters: [
-                //     { text: 'London', value: 'London' },
-                //     { text: 'New York', value: 'New York' },
-                // ],
-                sorter: (a, b) => a.cost - b.cost,
-                sortOrder: sortedInfo.columnKey === 'cost' && sortedInfo.order,
-                ellipsis: true,
-            },
-            {
-                title: 'Фото',
-                dataIndex: 'picture',
-                key: 'picture',
-                render: (text) => <img height={'40'} src={text}/>
-            },
-
         ];
         return (
             <>
-                <Table rowKey={'id'} columns={columns} dataSource={this.props.val} onChange={this.handleChange} />
+                <Table rowKey={'id'} columns={columns} dataSource={this.props.val} onChange={this.handleChange}
+                       summary={pageData => {
+                           let totalScore = 0;
+
+                           pageData.forEach(({ score }) => {
+                               totalScore += score;
+                           });
+
+                           return (
+                               <>
+                                   <Table.Summary.Row>
+                                       <Table.Summary.Cell>Всего очков</Table.Summary.Cell>
+                                       <Table.Summary.Cell>
+                                           <Text type="danger">{totalScore}</Text>
+                                       </Table.Summary.Cell>
+                                   </Table.Summary.Row>
+                               </>
+                           );
+                       }}/>
+                <Modal title="Информация о спортсмене"
+                       okText = "Закрыть"
+                       cancelButtonProps={{hidden: true}}
+                       visible={isModalVisible}
+                       onOk={this.handleOk} >
+                    {part_info[0] && par_id === part_info[0].surname ? (<div>
+                            {part_info[0].photo ? (<img style={{width: '200px'}} src={part_info[0].photo}/>) : (<div><u>Фото отсутствует</u></div>)}
+                            <div>Фамилия: {part_info[0].surname}</div>
+                            <div>Имя: {part_info[0].name}</div>
+                            {part_info[0].lastname ? (<div>Отчество: {part_info[0].lastname}</div>) : (null)}
+                            <div>Возраст: {part_info[0].age}</div>
+                            <div>Пол: {part_info[0].gender == "М" ? (<span>Мужской</span>) : (<span>Женский</span>)}</div>
+                            <div>Место рождения: {part_info[0].country}</div>
+                            </div>)
+                        : (<div>Загрузка...</div>)}
+                </Modal>
             </>
         );
     }

@@ -7,7 +7,7 @@ function WrongLaba6() {
     const [list, setList] = useState([])
 
     useEffect(() =>{
-        Axios.get("http://localhost:3001/getAllScores").then((response) => {
+        Axios.get("http://localhost:3001/getList").then((response) => {
             setList(response.data);
         });
 
@@ -16,7 +16,7 @@ function WrongLaba6() {
     return (
         <div className = "wrapper">
             <div className = "content">
-                <h1>Все забеги</h1>
+                <h1>Чайный каталог</h1>
                 <ListTable val = {list}/>
             </div>
         </div>
