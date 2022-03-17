@@ -3,8 +3,11 @@ import nightTime from '../Data/night.png'
 import dayTime from '../Data/day.png'
 
 function Laba2() {
-    const[mvStyle, setmvStyle] = useState('mvStyle')
-    const[puStyle, setpuStyle] = useState('puStyle')
+    const[value, setValue] = useState('')
+
+    const changeDayTime = () =>{
+        value ? setValue('') : setValue('getToNightTime')
+    }
 
     return (
         <div className = "wrapper">
@@ -24,7 +27,7 @@ function Laba2() {
                     <h2>Решение:</h2>
                     <div className='imageConteiner'>
                         <img className = {'nightTime'} src = {nightTime}  height="300" alt="nightTime"/>
-                        <img className = {'dayTime'} src = {dayTime} alt="dayTime"/>
+                        <img className = {'dayTime ' + value} src = {dayTime} alt="dayTime" onClick={changeDayTime}/>
                     </div>
                 </div>
             </div>

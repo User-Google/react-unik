@@ -155,15 +155,19 @@ code {
   height: 300px;
   transition: 2s;
 }
+.getToNightTime {
+  opacity: 0;
+  transition: 2s;
+}
 
 .nightTime {
   height: 300px;
 }
 
-.dayTime:hover {
- opacity: 0;
-  transition: 2s;
-}
+/*.dayTime:hover {*/
+/* opacity: 0;*/
+/*  transition: 2s;*/
+/*}*/
 
 
 @font-face{
